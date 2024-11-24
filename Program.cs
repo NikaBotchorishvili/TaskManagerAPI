@@ -2,9 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Task_Manager_API;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddControllers();
 builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSwaggerGen(options =>
+{
+    options.EnableAnnotations();
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +44,8 @@ app.MapGet("/weatherforecast", () =>
     })
     .WithName("GetWeatherForecast")
     .WithOpenApi();
+
+app.MapControllers();
 
 app.Run();
 
